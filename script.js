@@ -1,52 +1,45 @@
-// =======================
-// TYPEWRITER QUOTE
-// =======================
-const quoteText = "È meglio prevenire i delitti che punirli";
-const quoteElement = document.getElementById("quote");
-let index = 0;
+// SCROLL SMOOTH
 
-function typeQuote() {
-  if (index < quoteText.length) {
-    quoteElement.innerHTML += quoteText.charAt(index);
-    index++;
-    setTimeout(typeQuote, 60);
-  }
-}
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
-typeQuote();
+    anchor.addEventListener("click", function(e){
 
-// =======================
-// SCROLL REVEAL
-// =======================
-const reveals = document.querySelectorAll(".reveal");
+        e.preventDefault();
 
-window.addEventListener("scroll", () => {
-  reveals.forEach(section => {
-    const top = section.getBoundingClientRect().top;
-    if (top < window.innerHeight - 100) {
-      section.classList.add("active");
-    }
-  });
+        document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior:"smooth"
+        });
+
+    });
+
 });
 
-// =======================
-// PALLINE / NEVE SU CARDS
-// =======================
-const navCards = document.querySelectorAll(".nav-card");
 
-navCards.forEach(card => {
-  card.addEventListener("mouseenter", () => {
-    for (let i = 0; i < 10; i++) {
-      const particle = document.createElement("span");
-      particle.classList.add("particle");
-      particle.style.left = Math.random() * 100 + "%";
-      particle.style.top = "100%";
-      particle.style.animationDuration = 3 + Math.random() * 2 + "s";
-      card.appendChild(particle);
+// ANIMAZIONE SEZIONI
 
-      setTimeout(() => {
-        particle.remove();
-      }, 5000);
-    }
-  });
+const sections = document.querySelectorAll(".poet-section");
+
+const observer = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+        if(entry.isIntersecting){
+
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = "translateY(0px)";
+
+        }
+
+    });
+
+});
+
+sections.forEach(section => {
+
+    section.style.opacity = 0;
+    section.style.transform = "translateY(40px)";
+    section.style.transition = "all 1s";
+
+    observer.observe(section);
+
 });
